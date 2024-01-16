@@ -1,4 +1,4 @@
-package com.example.petpetpet.ui.dashboard;
+package com.example.petpetpet.ui.rescue;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.petpetpet.databinding.FragmentDashboardBinding;
+import com.example.petpetpet.databinding.FragmentRescueBinding;
 
-public class DashboardFragment extends Fragment {
+public class RescueFragment extends Fragment {
 
-    private FragmentDashboardBinding binding;
+    private FragmentRescueBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        DashboardViewModel dashboardViewModel =
-                new ViewModelProvider(this).get(DashboardViewModel.class);
+        RescueViewModel rescueViewModel =
+                new ViewModelProvider(this).get(RescueViewModel.class);
 
-        binding = FragmentDashboardBinding.inflate(inflater, container, false);
+        binding = FragmentRescueBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textDashboard;
-        dashboardViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textRescue;
+        rescueViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 

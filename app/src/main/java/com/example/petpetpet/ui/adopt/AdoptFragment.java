@@ -1,4 +1,4 @@
-package com.example.petpetpet.ui.notifications;
+package com.example.petpetpet.ui.adopt;
 
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -10,22 +10,22 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 import androidx.lifecycle.ViewModelProvider;
 
-import com.example.petpetpet.databinding.FragmentNotificationsBinding;
+import com.example.petpetpet.databinding.FragmentAdoptBinding;
 
-public class NotificationsFragment extends Fragment {
+public class AdoptFragment extends Fragment {
 
-    private FragmentNotificationsBinding binding;
+    private FragmentAdoptBinding binding;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        NotificationsViewModel notificationsViewModel =
-                new ViewModelProvider(this).get(NotificationsViewModel.class);
+        AdoptViewModel adoptViewModel =
+                new ViewModelProvider(this).get(AdoptViewModel.class);
 
-        binding = FragmentNotificationsBinding.inflate(inflater, container, false);
+        binding = FragmentAdoptBinding.inflate(inflater, container, false);
         View root = binding.getRoot();
 
-        final TextView textView = binding.textNotifications;
-        notificationsViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
+        final TextView textView = binding.textAdopt;
+        adoptViewModel.getText().observe(getViewLifecycleOwner(), textView::setText);
         return root;
     }
 
