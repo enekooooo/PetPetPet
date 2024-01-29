@@ -22,4 +22,17 @@
         android:name="com.example.petpetpet.ui.rescue.RescueFragment"
         android:label="@string/title_rescue"
         tools:layout="@layout/fragment_rescue" />
+
+    <fragment
+        android:id="@+id/navigation_message"
+        android:name="com.example.petpetpet.ui.message.MessageFragment"
+        android:label="@string/title_message"
+        tools:layout="@layout/fragment_message" />
+
+    <fragment
+        android:id="@+id/navigation_personal"
+        android:name="com.example.petpetpet.ui.personal.PersonalFragment"
+        android:label="@string/title_personal"
+        tools:layout="@layout/fragment_personal" />
+
 </navigation>
