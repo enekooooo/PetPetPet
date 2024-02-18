@@ -7,7 +7,7 @@
     tools:context=".ui.personal.PersonalUnderActivity.PersonalAbout">
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/card_title"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="This is about"

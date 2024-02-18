@@ -45,7 +45,6 @@
         android:layout_height="30dp"
         android:layout_marginTop="50dp"
         android:layout_toRightOf="@id/head_pic"
-        android:text="请登陆账号"
         android:textSize="18dp" />
 
     <LinearLayout

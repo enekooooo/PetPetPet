@@ -1,4 +1,4 @@
-package com.example.petpetpet.ui.personal;
+package com.example.petpetpet.ui.CardPost;
 
 import android.content.Context;
 import android.view.View;
@@ -12,17 +12,17 @@ import com.example.petpetpet.R;
 
 import java.util.ArrayList;
 
+public class CardItemAdapter extends RecyclerView.Adapter<CardItemAdapter.CardViewHolder>{
 
-public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapter.PersonalViewHolder> {
     private Context context;
-    private ArrayList<PersonalItem> personalItemList;
+    private ArrayList<CardItem> cardItemList;
 
 
     //创建构造函数
-    public PersonalItemAdapter(Context context, ArrayList<PersonalItem> personalItemList) {
+    public CardItemAdapter(Context context, ArrayList<CardItem> cardItemList) {
         //将传递过来的数据，赋值给本地变量
         this.context = context;//上下文
-        this.personalItemList = personalItemList;//实体类数据ArrayList
+        this.cardItemList = cardItemList;//实体类数据ArrayList
     }
 
     /**
@@ -33,18 +33,17 @@ public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapte
      * @return
      */
     @Override
-    public PersonalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public CardViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //创建自定义布局
-        View itemView = View.inflate(context, R.layout.item_personal, null);
+        View itemView = View.inflate(context, R.layout.item_card, null);
         itemView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(context,65)));
-        return new PersonalViewHolder(itemView);
+        return new CardViewHolder(itemView);
     }
 
     public static int dp2px(Context context, final float dpValue) {//dp转换px
         final float scale = context.getResources().getDisplayMetrics().density;
         return (int) (dpValue * scale + 0.5f);
     }
-
 
 
     /**
@@ -54,18 +53,28 @@ public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapte
      */
     @Override
     public int getItemCount() {
-        return personalItemList.size();
+        return cardItemList.size();
     }
 
     //自定义viewhodler
-    class PersonalViewHolder extends RecyclerView.ViewHolder {
-        private ImageView personalItemPic;
-        private TextView personalItemTextView;
+    class CardViewHolder extends RecyclerView.ViewHolder {
 
-        public PersonalViewHolder(View itemView) {
+        private ImageView CardPostImageId;
+        private ImageView CardHeadImageId;
+        private ImageView CardHeart;
+        private TextView CardTitle;
+        private TextView CardUserName;
+
+
+        public CardViewHolder(View itemView) {
             super(itemView);
-            personalItemPic = (ImageView) itemView.findViewById(R.id.personal_item_pic);
-            personalItemTextView = (TextView) itemView.findViewById(R.id.personal_item_textView);
+
+            CardPostImageId = (ImageView) itemView.findViewById(R.id.card_post_pic);
+            CardHeadImageId = (ImageView) itemView.findViewById(R.id.card_head_pic);
+            CardHeart = (ImageView) itemView.findViewById(R.id.card_heart);
+            CardTitle = (TextView) itemView.findViewById(R.id.card_title);
+            CardUserName = (TextView) itemView.findViewById(R.id.card_name);
+
             //点击事件放在adapter中使用，也可以写个接口在activity中调用
             //在adapter中设置点击事件
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -90,12 +99,15 @@ public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapte
      * @param position
      */
     @Override
-    public void onBindViewHolder(PersonalViewHolder holder, int position) {
+    public void onBindViewHolder(CardViewHolder holder, int position) {
         //根据点击位置绑定数据
-        PersonalItem data = personalItemList.get(position);
-//        holder.mItemGoodsImg;
-        holder.personalItemTextView.setText(data.getTitle());//获取实体类中的name字段并设置
-        holder.personalItemPic.setImageResource(data.getImageId());
+        CardItem data = cardItemList.get(position);
+
+        holder.CardPostImageId.setImageResource(data.getPostImageId());//获取实体类中的字段并设置
+        holder.CardHeadImageId.setImageResource(data.getHeadImageId());
+        holder.CardHeart.setImageResource(data.getHeart());
+        holder.CardTitle.setText(data.getTitle());
+        holder.CardUserName.setText(data.getUserName());
     }
 
     /**
@@ -119,7 +131,6 @@ public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapte
         this.onItemClickListener = onItemClickListener;
     }
 
+
+
 }
-
-
-

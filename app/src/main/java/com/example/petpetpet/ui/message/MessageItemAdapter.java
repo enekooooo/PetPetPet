@@ -1,4 +1,4 @@
-package com.example.petpetpet.ui.personal;
+package com.example.petpetpet.ui.message;
 
 import android.content.Context;
 import android.view.View;
@@ -13,16 +13,16 @@ import com.example.petpetpet.R;
 import java.util.ArrayList;
 
 
-public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapter.PersonalViewHolder> {
+public class MessageItemAdapter extends RecyclerView.Adapter<MessageItemAdapter.MessageViewHolder> {
     private Context context;
-    private ArrayList<PersonalItem> personalItemList;
+    private ArrayList<MessageItem> messageItemList;
 
 
     //创建构造函数
-    public PersonalItemAdapter(Context context, ArrayList<PersonalItem> personalItemList) {
+    public MessageItemAdapter(Context context, ArrayList<MessageItem> messageItemList) {
         //将传递过来的数据，赋值给本地变量
         this.context = context;//上下文
-        this.personalItemList = personalItemList;//实体类数据ArrayList
+        this.messageItemList = messageItemList;//实体类数据ArrayList
     }
 
     /**
@@ -33,11 +33,11 @@ public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapte
      * @return
      */
     @Override
-    public PersonalViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+    public MessageViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
         //创建自定义布局
-        View itemView = View.inflate(context, R.layout.item_personal, null);
+        View itemView = View.inflate(context, R.layout.item_message, null);
         itemView.setLayoutParams(new ViewGroup.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, dp2px(context,65)));
-        return new PersonalViewHolder(itemView);
+        return new MessageViewHolder(itemView);
     }
 
     public static int dp2px(Context context, final float dpValue) {//dp转换px
@@ -45,7 +45,20 @@ public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapte
         return (int) (dpValue * scale + 0.5f);
     }
 
-
+    /**
+     * 绑定数据，数据与view绑定
+     *
+     * @param holder
+     * @param position
+     */
+    @Override
+    public void onBindViewHolder(MessageViewHolder holder, int position) {
+        //根据点击位置绑定数据
+        MessageItem data = messageItemList.get(position);
+//        holder.mItemGoodsImg;
+        holder.messageItemTextView.setText(data.getTitle());//获取实体类中的name字段并设置
+        holder.messageItemPic.setImageResource(data.getImageId());
+    }
 
     /**
      * 得到总条数
@@ -54,18 +67,18 @@ public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapte
      */
     @Override
     public int getItemCount() {
-        return personalItemList.size();
+        return messageItemList.size();
     }
 
     //自定义viewhodler
-    class PersonalViewHolder extends RecyclerView.ViewHolder {
-        private ImageView personalItemPic;
-        private TextView personalItemTextView;
+    class MessageViewHolder extends RecyclerView.ViewHolder {
+        private ImageView messageItemPic;
+        private TextView messageItemTextView;
 
-        public PersonalViewHolder(View itemView) {
+        public MessageViewHolder(View itemView) {
             super(itemView);
-            personalItemPic = (ImageView) itemView.findViewById(R.id.personal_item_pic);
-            personalItemTextView = (TextView) itemView.findViewById(R.id.personal_item_textView);
+            messageItemPic = (ImageView) itemView.findViewById(R.id.card_head_pic);
+            messageItemTextView = (TextView) itemView.findViewById(R.id.message_item_textView);
             //点击事件放在adapter中使用，也可以写个接口在activity中调用
             //在adapter中设置点击事件
             itemView.setOnClickListener(new View.OnClickListener() {
@@ -81,21 +94,6 @@ public class PersonalItemAdapter extends RecyclerView.Adapter<PersonalItemAdapte
             });
 
         }
-    }
-
-    /**
-     * 绑定数据，数据与view绑定
-     *
-     * @param holder
-     * @param position
-     */
-    @Override
-    public void onBindViewHolder(PersonalViewHolder holder, int position) {
-        //根据点击位置绑定数据
-        PersonalItem data = personalItemList.get(position);
-//        holder.mItemGoodsImg;
-        holder.personalItemTextView.setText(data.getTitle());//获取实体类中的name字段并设置
-        holder.personalItemPic.setImageResource(data.getImageId());
     }
 
     /**
