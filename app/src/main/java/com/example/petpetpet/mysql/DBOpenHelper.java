@@ -31,29 +31,6 @@ public class DBOpenHelper {
             Log.d(TAG, "加载JDBC驱动成功");
             conn = (Connection) DriverManager.getConnection(url,user,password);//获取连接
             Log.d(TAG, "连接数据库成功");
-//            Statement stmt = conn.createStatement();
-//                                String sql;
-//                    sql = "SELECT  id, gname,gprice FROM goods";
-//                    ResultSet rs = stmt.executeQuery(sql);
-//
-//                    while(rs.next()){
-//                        // 通过字段检索
-//                        int number  = rs.getInt("id");
-//                        String name = rs.getString("gname");
-//                        String sex = rs.getString("gprice");
-//
-//                        // 输出数据
-//                        System.out.print("number: " + number);
-//                        System.out.print(", 站点名称: " + name);
-//                        System.out.print(", 站点 sex: " + sex);
-//                        System.out.print("\n");
-//
-//                    }
-//            // 完成后关闭
-//            rs.close();
-//            stmt.close();
-
-
         } catch (ClassNotFoundException e) {
             e.printStackTrace();
         } catch (SQLException e) {

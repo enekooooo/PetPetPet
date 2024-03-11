@@ -3,7 +3,9 @@ package com.example.petpetpet;
 import android.os.Bundle;
 
 import com.example.petpetpet.mysql.DBOpenHelper;
+import com.example.petpetpet.mysql.DBPetHelper;
 import com.example.petpetpet.mysql.DBUserHelper;
+import com.example.petpetpet.ui.personal.db.User;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -36,5 +38,12 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(binding.navView, navController);
 
 
+        User user = new User();
+        user.setUserName("2113");
+        user.setUserId(39);
+        user.setUserType(1);
+        user.setUserCommunity("2113");
+
+        DBPetHelper.queryAll();
     }
 }

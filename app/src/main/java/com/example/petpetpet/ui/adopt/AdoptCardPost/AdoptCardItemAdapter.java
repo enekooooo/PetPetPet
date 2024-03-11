@@ -1,6 +1,7 @@
-package com.example.petpetpet.ui.CardPost;
+package com.example.petpetpet.ui.adopt.AdoptCardPost;
 
-import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -11,31 +12,47 @@ import android.widget.Toast;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.example.petpetpet.R;
+import com.example.petpetpet.mysql.DBPetHelper;
+import com.example.petpetpet.ui.StringAndBitmap;
+import com.example.petpetpet.ui.personal.db.User;
 
-import java.util.ArrayList;
 import java.util.List;
 
-public class CardItemAdapter extends RecyclerView.Adapter<CardItemAdapter.CardItemView> {
+public class AdoptCardItemAdapter extends RecyclerView.Adapter<AdoptCardItemAdapter.AdoptCardItemView> {
 
-    private List<CardItem> products;
+    private List<AdoptCardItem> products;
 
-    public CardItemAdapter(List<CardItem> list) {
+    public AdoptCardItemAdapter(List<AdoptCardItem> list) {
         products = list;
     }
 
     @Override
-    public CardItemView onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_card, viewGroup, false);
-        return new CardItemView(view);
+    public AdoptCardItemView onCreateViewHolder(ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.item_pet_card, viewGroup, false);
+        return new AdoptCardItemView(view);
     }
 
     @Override
-    public void onBindViewHolder(CardItemView cardItemView, int position) {
-        cardItemView.CardPostImageId.setImageResource(products.get(position).getPostImageId());
-        cardItemView.CardHeadImageId.setImageResource(products.get(position).getHeadImageId());
-        cardItemView.CardHeart.setImageResource(products.get(position).getHeart());
-        cardItemView.CardTitle.setText(products.get(position).getTitle());
-        cardItemView.CardUserName.setText(products.get(position).getUserName());
+    public void onBindViewHolder(AdoptCardItemView cardItemView, int position) {
+        cardItemView.PetCardPostImageId.setImageBitmap(products.get(position).getPetImageId());
+        cardItemView.PetCardName.setText(products.get(position).getPetName());
+        cardItemView.PetCardCommunity.setText(products.get(position).getPetCommunity());
+        cardItemView.PetCardLocate.setText(products.get(position).getPetLocate());
+
+        if (products.get(position).getPetSex()==1)
+            cardItemView.PetCardSex.setImageResource(R.drawable.male);
+        else
+            cardItemView.PetCardSex.setImageResource(R.drawable.female);
+
+        if (products.get(position).getHeart()==1)
+            cardItemView.PetCardHeart.setImageResource(R.drawable.heart_full);
+        else
+            cardItemView.PetCardHeart.setImageResource(R.drawable.heart);
+// TODO: 2024.3.3 领养可以做的更好看点
+        if (products.get(position).getPetState()==1)
+            cardItemView.PetCardState.setText("待领养");
+        else
+            cardItemView.PetCardState.setText("已领养");
     }
 
     @Override
@@ -43,22 +60,25 @@ public class CardItemAdapter extends RecyclerView.Adapter<CardItemAdapter.CardIt
         return products.size();
     }
 
-    public static class CardItemView extends RecyclerView.ViewHolder {
+    public static class AdoptCardItemView extends RecyclerView.ViewHolder {
+        ImageView PetCardPostImageId;//动物图片
+        ImageView PetCardSex;//动物性别
+        ImageView PetCardHeart;//喜欢or未喜欢
+        TextView PetCardName;//动物名称
+        TextView PetCardCommunity;//动物所属社区
+        TextView PetCardLocate;//动物位置（如江苏南京栖霞区）
+        TextView PetCardState;//领养状态
 
-        ImageView CardPostImageId;
-        ImageView CardHeadImageId;
-        ImageView CardHeart;
-        TextView CardTitle;
-        TextView CardUserName;
-
-        public CardItemView(View itemView) {
+        public AdoptCardItemView(View itemView) {
             super(itemView);
 
-            CardPostImageId = (ImageView) itemView.findViewById(R.id.card_post_pic);
-            CardHeadImageId = (ImageView) itemView.findViewById(R.id.card_head_pic);
-            CardHeart = (ImageView) itemView.findViewById(R.id.card_heart);
-            CardTitle = (TextView) itemView.findViewById(R.id.card_title);
-            CardUserName = (TextView) itemView.findViewById(R.id.card_name);
+            PetCardPostImageId = (ImageView) itemView.findViewById(R.id.pet_card_pic);
+            PetCardSex = (ImageView) itemView.findViewById(R.id.pet_card_sex);
+            PetCardHeart = (ImageView) itemView.findViewById(R.id.pet_card_heart);
+            PetCardName = (TextView) itemView.findViewById(R.id.pet_card_name);
+            PetCardCommunity = (TextView) itemView.findViewById(R.id.pet_card_community);
+            PetCardLocate = (TextView) itemView.findViewById(R.id.pet_card_locate);
+            PetCardState = (TextView) itemView.findViewById(R.id.pet_card_state);
 
             //点击事件放在adapter中使用，也可以写个接口在activity中调用
             //在adapter中设置点击事件
@@ -66,14 +86,32 @@ public class CardItemAdapter extends RecyclerView.Adapter<CardItemAdapter.CardIt
                 @Override
                 public void onClick(View v) {
                     //可以选择直接在本位置直接写业务处理
-                    Toast.makeText(v.getContext(), "点击了"+CardTitle.getText(),Toast.LENGTH_SHORT).show();
+                    Toast.makeText(v.getContext(), "点击了猫猫"+PetCardName.getText(),Toast.LENGTH_SHORT).show();
                     //此处回传点击监听事件
 
+//                    StringAndBitmap stringAndBitmap = new StringAndBitmap();
+//
+//                    User user = new User();
+//                    Bitmap bitmap=((BitmapDrawable)PetCardPostImageId.getDrawable()).getBitmap();
+//                    String string=stringAndBitmap.bitmapToString(bitmap);
+//                    DBPetHelper.insert(string,1,1, (String) PetCardName.getText()
+//                            , (String) PetCardCommunity.getText(), "中华田园猫", (String) PetCardLocate.getText(),user.getUserId());
+
+                    //                    StringAndBitmap stringAndBitmap = new StringAndBitmap();
+//                    Bitmap bitmap=((BitmapDrawable)head_pic.getDrawable()).getBitmap();
+//                    String string=stringAndBitmap.bitmapToString(bitmap);
+//                    DBHeadHelper.insert(1, string);
+//                    string = DBHeadHelper.query(1);
+//                    System.out.println("aaa"+DBHeadHelper.query(1));
+//                    head_pic.setImageBitmap(stringAndBitmap.stringToBitmap(string));
+//                    TextView personal_name = view.findViewById(R.id.name);
+//                    personal_name.setText(DBHeadHelper.query(1));
                 }
             });
 
         }
-        }
+
+    }
 
 }
 

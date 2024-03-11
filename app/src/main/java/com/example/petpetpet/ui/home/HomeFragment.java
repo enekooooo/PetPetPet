@@ -1,5 +1,6 @@
 package com.example.petpetpet.ui.home;
 
+import android.graphics.Rect;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -47,7 +48,7 @@ public class HomeFragment extends Fragment {
     //小模块
     ViewPager viewPager;
     TabLayout tabLayout;
-    List<View> views;
+    List<View> Listviews;
     List<String> titles;
 
     //小模块适配器
@@ -55,9 +56,22 @@ public class HomeFragment extends Fragment {
     private View viewTwo;
     public RecyclerView recyclerView1;//定义RecyclerView
     public RecyclerView recyclerView2;//定义RecyclerView
-    private ArrayList<CardItem> cardItemArrayList = new ArrayList<CardItem>();
-    //自定义recyclerveiw的适配器
-    private CardItemAdapter cardItemAdapter;
+    private List<CardItem> cardItemArrayList=new ArrayList<CardItem>();
+
+
+    private String[] texts = new String[] {
+            "已知花意，未见其花。已见其花，未闻花名。", "此生无悔入四月，来世愿做友人A。",
+            "此生无悔入夏目，来世愿做帐中妖。", "安兹王屠帝，号天下于此。",
+            "如果幸福有颜色的话，那一定是被末日所染红的蓝色", "吾王剑之所指，吾等心之所向。",
+            "无论在什么地方，什么时候，在我们的头顶都是同样悠远的天穹，就好像是永远都无法分开的羁绊","镜子里显示出来的永远只是真实的影像，而不是真实的自己。",
+            "人类的心里住着一只野兽，纯粹，凶猛，无法驯养，那是一只叫做“嫉妒”的野兽" ,"如果我闭上了双眼，看到的是黑暗的话，那么当我睁开眼睛去看这个世界的时候，是否会是一片光明？",
+            "我想成为一个温柔的人，因为曾被温柔的人那样对待，深深了解那种被温柔相待的感觉。","如果时光可以倒流 我还是会选择认识你 虽然会伤痕累累 但是心中的温暖记忆是谁都无法给与的 谢谢你来过我的世界",
+            "无论在哪里遇到你，我都会喜欢上你","只要有你在，我就无所不能。",
+    };
+    private int[] photo = new int[] { R.drawable.mm1,R.drawable.mm2,R.drawable.mm3,
+            R.drawable.mm4,R.drawable.mm5,R.drawable.cat_pic,R.drawable.cat,R.drawable.mm3,R.drawable.mm5,
+            R.drawable.cat_pic,R.drawable.mm1,R.drawable.cat_pic,R.drawable.mm1,R.drawable.mm3};
+
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -82,14 +96,16 @@ public class HomeFragment extends Fragment {
         viewOne = LayoutInflater.from(view.getContext()).inflate(R.layout.fragment_home_viewpager1, null);
         viewTwo = LayoutInflater.from(view.getContext()).inflate(R.layout.fragment_home_viewpager2, null);
 
-        views = new ArrayList<>();
-        views.add(viewOne);
-        views.add(viewTwo);
+        Listviews = new ArrayList<>();
+        Listviews.add(viewOne);
+        Listviews.add(viewTwo);
         titles = new ArrayList<>();
         titles.add("推荐");
         titles.add("社区动态");
 
-        HomeViewPageAdapter adapter = new HomeViewPageAdapter(views, titles);
+
+
+        HomeViewPageAdapter adapter = new HomeViewPageAdapter(Listviews, titles);
 
         for (String title : titles) {
             tabLayout.addTab(tabLayout.newTab().setText(title));
@@ -98,17 +114,9 @@ public class HomeFragment extends Fragment {
         tabLayout.setupWithViewPager(viewPager);
         viewPager.setAdapter(adapter);
 
-//        TextView viewpager1_textView = viewOne.findViewById(R.id.viewpager1_textView);
-//        viewpager1_textView.setText("我是1");
-//
-//
-//        TextView viewpager2_textView = viewTwo.findViewById(R.id.viewpager2_textView);
-//        viewpager2_textView.setText("我是2");
 
         //对recycleview进行配置
         initRecyclerView();
-        //模拟数据
-        initData();
 
 
         return view;
@@ -126,27 +134,49 @@ public class HomeFragment extends Fragment {
         //获取RecyclerView
         recyclerView1 = (RecyclerView) viewOne.findViewById(R.id.home_viewpager1);
         recyclerView2 = (RecyclerView) viewTwo.findViewById(R.id.home_viewpager2);
+        //设置layoutManager
+        recyclerView1.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
+        recyclerView2.setLayoutManager(new StaggeredGridLayoutManager(2,StaggeredGridLayoutManager.VERTICAL));
 
-        //创建adapter
-        cardItemAdapter = new CardItemAdapter(getActivity(), cardItemArrayList);
-        //给RecyclerView设置adapter
-        recyclerView1.setAdapter(cardItemAdapter);
-        recyclerView2.setAdapter(cardItemAdapter);
+        //设置adapter
+        initData();
+        CardItemAdapter adapter=new CardItemAdapter(cardItemArrayList);
+        recyclerView1.setAdapter(adapter);
+        recyclerView2.setAdapter(adapter);
 
-        //设置layoutManager,可以设置显示效果，是线性布局、grid布局，还是瀑布流布局
-        //参数是：上下文、列表方向（横向还是纵向）、是否倒叙
-        recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
-        //设置item的分割线
-        recyclerView1.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
-        recyclerView2.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+        //设置item之间的间隔
+        SpacesItemDecoration decoration=new SpacesItemDecoration(16);
+        recyclerView1.addItemDecoration(decoration);
+        recyclerView2.addItemDecoration(decoration);
 
-        //瀑布流
-        StaggeredGridLayoutManager manager1 = new StaggeredGridLayoutManager(2, LinearLayout.VERTICAL);
-        StaggeredGridLayoutManager manager2 = new StaggeredGridLayoutManager(2, LinearLayout.VERTICAL);
 
-        recyclerView1.setLayoutManager(manager1);
-        recyclerView2.setLayoutManager(manager2);
+        /**
+//        //获取RecyclerView
+//        recyclerView1 = (RecyclerView) viewOne.findViewById(R.id.home_viewpager1);
+//        recyclerView2 = (RecyclerView) viewTwo.findViewById(R.id.home_viewpager2);
+//
+//        //创建adapter
+//        cardItemAdapter = new AdoptCardItemAdapter(getActivity(), cardItemArrayList);
+//        //给RecyclerView设置adapter
+//        recyclerView1.setAdapter(cardItemAdapter);
+//        recyclerView2.setAdapter(cardItemAdapter);
+//
+//        //设置layoutManager,可以设置显示效果，是线性布局、grid布局，还是瀑布流布局
+//        //参数是：上下文、列表方向（横向还是纵向）、是否倒叙
+//        recyclerView1.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+//        recyclerView2.setLayoutManager(new LinearLayoutManager(getActivity(), LinearLayoutManager.VERTICAL, false));
+//        //设置item的分割线
+//        recyclerView1.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+//        recyclerView2.addItemDecoration(new DividerItemDecoration(getActivity(), DividerItemDecoration.VERTICAL));
+//
+//        //瀑布流
+//        StaggeredGridLayoutManager manager1 = new StaggeredGridLayoutManager(2, LinearLayout.VERTICAL);
+//        StaggeredGridLayoutManager manager2 = new StaggeredGridLayoutManager(2, LinearLayout.VERTICAL);
+//
+//        recyclerView1.setLayoutManager(manager1);
+//        recyclerView2.setLayoutManager(manager2);
+**/
+
 
         //RecyclerView中没有item的监听事件，需要自己在适配器中写一个监听事件的接口。参数根据自定义
 
@@ -188,6 +218,7 @@ public class HomeFragment extends Fragment {
 
     // TODO: 2024.2.16 心心没搞
     private void initData() {//个人界面列表内容
+
         String[] names=new String[]{"用户1","用户2","用户3","用户4","用户5"};
         String[] titles=new String[]{"标题1","标题2","标题3","标题4","标题5"};
 
@@ -195,15 +226,31 @@ public class HomeFragment extends Fragment {
         int[] HeadImageId=new int[]{R.drawable.cat_pic,R.drawable.cat_pic,R.drawable.cat_pic,R.drawable.cat_pic,R.drawable.cat_pic};
 
 
-        for (int i = 0; i < 5; i++) {
+        for (int i = 0; i < 11; i++) {
             CardItem cardItem = new CardItem();
-            cardItem.setPostImageId(PostImageId[i]);
-            cardItem.setHeadImageId(HeadImageId[i]);
-            cardItem.setUserName(names[i]);
-            cardItem.setTitle(titles[i]);
+            cardItem.setPostImageId(photo[i]);
+            cardItem.setHeadImageId(HeadImageId[i%5]);
+            cardItem.setUserName(names[i%5]);
+            cardItem.setTitle(texts[i]);
 
             cardItemArrayList.add(cardItem);
 
+        }
+    }
+
+    public class SpacesItemDecoration extends RecyclerView.ItemDecoration {
+        private int space;
+        public SpacesItemDecoration(int space) {
+            this.space=space;
+        }
+        @Override
+        public void getItemOffsets(Rect outRect, View view, RecyclerView parent, RecyclerView.State state) {
+            outRect.left=space;
+            outRect.right=space;
+            outRect.bottom=space;
+            if(parent.getChildAdapterPosition(view)==0){
+                outRect.top=space;
+            }
         }
     }
 

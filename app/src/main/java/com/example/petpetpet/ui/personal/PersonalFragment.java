@@ -7,6 +7,8 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -104,9 +106,27 @@ public class PersonalFragment extends Fragment {
         head_pic.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivityForResult(new Intent(getContext(), LoginActivity.class),1);
-                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                startActivity(intent);
+                User user = new User();
+                String username = user.getUserName();
+                if(username != null)
+                {
+                    // TODO: 2024.3.3 更换头像功能、退出登录功能
+//                    StringAndBitmap stringAndBitmap = new StringAndBitmap();
+//                    Bitmap bitmap=((BitmapDrawable)head_pic.getDrawable()).getBitmap();
+//                    String string=stringAndBitmap.bitmapToString(bitmap);
+//                    DBHeadHelper.insert(1, string);
+//                    string = DBHeadHelper.query(1);
+//                    System.out.println("aaa"+DBHeadHelper.query(1));
+//                    head_pic.setImageBitmap(stringAndBitmap.stringToBitmap(string));
+//                    TextView personal_name = view.findViewById(R.id.name);
+//                    personal_name.setText(DBHeadHelper.query(1));
+
+                }else {
+                    startActivityForResult(new Intent(getContext(), LoginActivity.class),1);
+                    Intent intent = new Intent(getActivity(), LoginActivity.class);
+                    startActivity(intent);
+                }
+
 
             }
         });
